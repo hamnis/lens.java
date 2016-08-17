@@ -8,7 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class LensOps {
+public final class LensOps {
+
+    private LensOps() {
+    }
 
     public static <K, V> Lens<Map<K, V>, Option<V>> at(K k) {
         return at(k, HashMap::new);

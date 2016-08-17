@@ -4,7 +4,7 @@ import javaslang.control.Option;
 
 import java.util.function.Function;
 
-public class Iso<S, A> {
+public final class Iso<S, A> {
     private final Function<S, A> get;
     private final Function<A, S> reverseGet;
 

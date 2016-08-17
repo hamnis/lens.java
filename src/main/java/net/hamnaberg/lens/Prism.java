@@ -5,7 +5,7 @@ import javaslang.control.Option;
 
 import java.util.function.Function;
 
-public class Prism<S, A> {
+public final class Prism<S, A> {
     private final Function<A, S> reverseGet;
     private final Function<S, Option<A>> getOption;
 
