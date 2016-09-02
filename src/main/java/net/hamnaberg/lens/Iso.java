@@ -36,8 +36,12 @@ public final class Iso<S, A> {
         );
     }
 
-    public <B> Prism<S, B> compose(Prism<A, B> prism) {
+    public <B> Prism<S, B> composePrism(Prism<A, B> prism) {
         return toPrism().compose(prism);
+    }
+
+    public <B> Lens<S, B> composeLens(Lens<A, B> lens) {
+        return toLens().compose(lens);
     }
 
     public Prism<S, A> toPrism() {
