@@ -3,30 +3,19 @@ package net.hamnaberg.lens;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public final class Lens<S, A> {
-    private final Function<S, A> get;
-    private final BiFunction<A, S, S> set;
-
-    private Lens(Function<S, A> get, BiFunction<A, S, S> set) {
-        this.get = get;
-        this.set = set;
+public interface Lens<S, A> {
+    static <S,A> Lens<S, A> of(Function<S, A> get, BiFunction<A, S, S> set) {
+        return new DefaultLens<>(get, set);
     }
 
-    public static <S,A> Lens<S, A> of(Function<S, A> get, BiFunction<A, S, S> set) {
-        return new Lens<>(get, set);
-    }
+    A get(S s);
 
-    public A get(S s) {
-        return get.apply(s);
-    }
+    S set(A a, S s);
 
-    public S set(A a, S s) {
-        return set.apply(a, s);
-    }
-
-    public <B> Lens<S, B> compose(Lens<A, B> lens) {
-        return new Lens<>(
-                get.andThen(lens.get),
+    default <B> Lens<S, B> compose(Lens<A, B> lens) {
+        Function<S, A> get = this::get;
+        return of(
+                get.andThen(lens::get),
                 (b, s) -> set(lens.set(b, get(s)), s)
         );
     }
