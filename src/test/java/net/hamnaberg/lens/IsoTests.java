@@ -43,7 +43,7 @@ public class IsoTests {
 
     @Test
     public void personTest() {
-        Iso<Person, Tuple2<String, Integer>> iso = new Iso<>(Person::tupled, Person::fromTuple);
+        Iso<Person, Tuple2<String, Integer>> iso = Iso.of(Person::tupled, Person::fromTuple);
         Arbitrary<Integer> ageA = Arbitrary.integer();
         Arbitrary<String> nameA = Arbitrary.string(Gen.choose('a', 'Z'));
 
@@ -58,7 +58,7 @@ public class IsoTests {
     public void intWrapper() {
         Arbitrary<Integer> integer = Arbitrary.integer();
         //Arbitrary<IntWrapper> intWrapper = integer.map(IntWrapper::new);
-        Iso<Integer, IntWrapper> iso = new Iso<>(IntWrapper::new, IntWrapper::get);
+        Iso<Integer, IntWrapper> iso = Iso.of(IntWrapper::new, IntWrapper::get);
 
         CheckResult result = Property.def("Integer wrapper iso").
                 forAll(integer).

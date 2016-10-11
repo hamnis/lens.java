@@ -9,14 +9,19 @@ public final class Prism<S, A> {
     private final Function<A, S> reverseGet;
     private final Function<S, Option<A>> getOption;
 
-    public Prism(Function<S, Option<A>> getOption, Function<A, S> reverseGet) {
+    private Prism(Function<S, Option<A>> getOption, Function<A, S> reverseGet) {
         this.reverseGet = reverseGet;
         this.getOption = getOption;
+    }
+
+    public static <S,A> Prism<S, A> of(Function<S, Option<A>> getOption, Function<A, S> reverseGet) {
+        return new Prism<>(getOption, reverseGet);
     }
 
     public S reverseGet(A a) {
         return reverseGet.apply(a);
     }
+
     public Option<A> getOption(S s) {
         return getOption.apply(s);
     }

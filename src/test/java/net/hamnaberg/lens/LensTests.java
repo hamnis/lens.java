@@ -8,8 +8,8 @@ public class LensTests {
 
     @Test
     public void testModifyPerson() {
-        Lens<Person, String> nameLens = new Lens<>(p -> p.name, (n, p) -> new Person(n, p.age));
-        Lens<Person, Integer> ageLens = new Lens<>(p -> p.age, (a, p) -> new Person(p.name, a));
+        Lens<Person, String> nameLens = Lens.of(p -> p.name, (n, p) -> new Person(n, p.age));
+        Lens<Person, Integer> ageLens = Lens.of(p -> p.age, (a, p) -> new Person(p.name, a));
 
         Person person = new Person("Erlend Hamnaberg", 32);
 

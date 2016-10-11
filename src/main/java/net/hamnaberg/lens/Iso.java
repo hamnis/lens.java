@@ -8,9 +8,13 @@ public final class Iso<S, A> {
     private final Function<S, A> get;
     private final Function<A, S> reverseGet;
 
-    public Iso(Function<S, A> get, Function<A, S> reverseGet) {
+    private Iso(Function<S, A> get, Function<A, S> reverseGet) {
         this.get = get;
         this.reverseGet = reverseGet;
+    }
+
+    public static <S, A> Iso<S, A> of(Function<S, A> get, Function<A, S> reverseGet) {
+        return new Iso<>(get, reverseGet);
     }
 
     public A get(S s) {
@@ -45,11 +49,11 @@ public final class Iso<S, A> {
     }
 
     public Prism<S, A> toPrism() {
-        return new Prism<>(s -> Option.some(get(s)), reverseGet);
+        return Prism.of(s -> Option.some(get(s)), reverseGet);
     }
 
     public Lens<S, A> toLens() {
-        return new Lens<>(get, (a, ignore) -> reverseGet(a));
+        return Lens.of(get, (a, ignore) -> reverseGet(a));
     }
 
     public static <S> Iso<S, S> identity() {

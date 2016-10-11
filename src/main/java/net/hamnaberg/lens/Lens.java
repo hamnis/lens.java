@@ -7,9 +7,13 @@ public final class Lens<S, A> {
     private final Function<S, A> get;
     private final BiFunction<A, S, S> set;
 
-    public Lens(Function<S, A> get, BiFunction<A, S, S> set) {
+    private Lens(Function<S, A> get, BiFunction<A, S, S> set) {
         this.get = get;
         this.set = set;
+    }
+
+    public static <S,A> Lens<S, A> of(Function<S, A> get, BiFunction<A, S, S> set) {
+        return new Lens<>(get, set);
     }
 
     public A get(S s) {
