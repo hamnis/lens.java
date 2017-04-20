@@ -9,9 +9,8 @@ import net.hamnaberg.lens.laws.IsoLaws;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.function.Function;
 
-public class IsoTests {
+public class IsoTest {
 
     @Test
     public void id() {
