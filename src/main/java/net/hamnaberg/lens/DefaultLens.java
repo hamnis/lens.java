@@ -5,9 +5,9 @@ import java.util.function.Function;
 
 final class DefaultLens<S, A> implements Lens<S, A> {
     private final Function<S, A> get;
-    private final BiFunction<A, S, S> set;
+    private final BiFunction<S, A, S> set;
 
-    DefaultLens(Function<S, A> get, BiFunction<A, S, S> set) {
+    DefaultLens(Function<S, A> get, BiFunction<S, A, S> set) {
         this.get = get;
         this.set = set;
     }
@@ -18,8 +18,8 @@ final class DefaultLens<S, A> implements Lens<S, A> {
     }
 
     @Override
-    public S set(A a, S s) {
-        return set.apply(a, s);
+    public S set(S s, A a) {
+        return set.apply(s, a);
     }
 
 }

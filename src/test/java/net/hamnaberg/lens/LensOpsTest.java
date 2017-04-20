@@ -20,7 +20,7 @@ public class LensOpsTest {
 
         Lens<Map<String, Integer>, Option<Integer>> oneLens = LensOps.at("1");
         oneLens.get(map).forEach(i -> assertEquals(Integer.valueOf(1), i));
-        Map<String, Integer> newMap = oneLens.set(Option.of(23), map);
+        Map<String, Integer> newMap = oneLens.set(map, Option.of(23));
 
         assertNotSame(map, newMap);
         assertNotEquals(map, newMap);
@@ -40,11 +40,11 @@ public class LensOpsTest {
         assertEquals(new LinkedHashSet<>(Arrays.asList("1", "2daf", "3aaawrefvs", "sdfkldsf")), map.keySet());
 
         Lens<Map<String, Integer>, Option<Integer>> oneLens = LensOps.at("1");
-        Map<String, Integer> newMap = oneLens.set(Option.of(23), map);
+        Map<String, Integer> newMap = oneLens.set(map, Option.of(23));
 
         assertNotEquals(Arrays.asList("1", "2daf", "3aaawrefvs", "sdfkldsf"), new ArrayList<>(newMap.keySet()));
         Lens<Map<String, Integer>, Option<Integer>> newLens = LensOps.at("1", LinkedHashMap::new);
-        Map<String, Integer> newMap2 = newLens.set(Option.of(23), map);
+        Map<String, Integer> newMap2 = newLens.set(map, Option.of(23));
 
         assertEquals(new LinkedHashSet<>(Arrays.asList("1", "2daf", "3aaawrefvs", "sdfkldsf")), newMap2.keySet());
     }

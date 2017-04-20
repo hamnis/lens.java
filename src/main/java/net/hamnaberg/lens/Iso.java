@@ -47,6 +47,6 @@ public interface Iso<S, A> {
     }
 
     default Lens<S, A> toLens() {
-        return Lens.of(this::get, (a, ignore) -> reverseGet(a));
+        return Lens.of(this::get, (ignore, a) -> reverseGet(a));
     }
 }
