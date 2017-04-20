@@ -2,6 +2,7 @@ package net.hamnaberg.lens;
 
 
 import javaslang.control.Option;
+import net.hamnaberg.lens.laws.LensLaws;
 import org.junit.Test;
 
 import java.util.*;
@@ -26,6 +27,9 @@ public class LensOpsTest {
         assertNotEquals(map, newMap);
         oneLens.get(newMap).forEach(i -> assertEquals(Integer.valueOf(23), i));
         oneLens.get(map).forEach(i -> assertEquals(Integer.valueOf(1), i));
+
+        assertTrue(new LensLaws<>(oneLens).satisfyAll(map, Option.of(100)));
+        assertTrue(new LensLaws<>(oneLens).satisfyAll(map, Option.none()));
     }
 
     @Test

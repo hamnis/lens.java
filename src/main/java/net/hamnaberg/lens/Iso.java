@@ -17,8 +17,12 @@ public interface Iso<S, A> {
 
     S reverseGet(A a);
 
-    default Function<S, S> modify(Function<A, A> f) {
-        return a -> reverseGet(f.apply(get(a)));
+    default S modify(S s, Function<A, A> f) {
+        return reverseGet(f.apply(get(s)));
+    }
+
+    default S set(S s, A value) {
+        return modify(s, ignore -> value);
     }
 
     default Iso<A, S> reverse() {

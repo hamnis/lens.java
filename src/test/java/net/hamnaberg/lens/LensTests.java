@@ -1,5 +1,6 @@
 package net.hamnaberg.lens;
 
+import net.hamnaberg.lens.laws.LensLaws;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -19,6 +20,9 @@ public class LensTests {
         assertNotEquals("Name lens did not work", person, updated);
         assertEquals("Age lens did not work", Integer.valueOf(person.age), ageLens.get(person));
         assertNotEquals("Age lens did not work", person.age, ageLens.set(person, 35));
+
+        assertTrue(new LensLaws<>(nameLens).satisfyAll(person, "Ola Nordmann"));
+        assertTrue(new LensLaws<>(ageLens).satisfyAll(person, 50));
     }
 
 }

@@ -5,19 +5,13 @@ import javaslang.test.Arbitrary;
 import javaslang.test.CheckResult;
 import javaslang.test.Gen;
 import javaslang.test.Property;
+import net.hamnaberg.lens.laws.IsoLaws;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.function.Function;
 
 public class IsoTests {
-
-    public <S, A> boolean laws(Iso<S, A> iso, S value, A value2) {
-        return value.equals(iso.reverseGet(iso.get(value))) && value2.equals(iso.get(iso.reverseGet(value2)));
-    }
-
-    public <S, A> boolean modify(Iso<S, A> iso, Function<A, A> f, S value, S expected) {
-        return iso.modify(f).apply(value).equals(expected);
-    }
 
     @Test
     public void id() {
@@ -27,18 +21,10 @@ public class IsoTests {
         Arbitrary<String> nameA = Arbitrary.string(Gen.choose('a', 'Z'));
         CheckResult result = Property.def("Identity Iso").
                 forAll(nameA, ageA).
-                suchThat((name, age) -> laws(iso, new Tuple2<>(name, age), new Tuple2<>(name, age))).
+                suchThat((name, age) -> new IsoLaws<>(iso).satisfyAll(new Tuple2<>(name, age), new Tuple2<>(name, age))).
                 check();
 
         result.assertIsSatisfied();
-
-        CheckResult modifyResult = Property.def("Modify Iso").
-                forAll(nameA, ageA).
-                suchThat((name, age) -> modify(iso, Function.identity(), new Tuple2<>(name, age), new Tuple2<>(name, age))).
-                check();
-
-        modifyResult.assertIsSatisfied();
-
     }
 
     @Test
@@ -49,7 +35,7 @@ public class IsoTests {
 
         CheckResult result = Property.def("PersonIso").
                 forAll(nameA, ageA).
-                suchThat((name, age) -> laws(iso, new Person(name, age), new Tuple2<>(name, age))).
+                suchThat((name, age) -> new IsoLaws<>(iso).satisfyAll(new Person(name, age), new Tuple2<>(name, age))).
                 check();
         result.assertIsSatisfied();
     }
@@ -62,12 +48,12 @@ public class IsoTests {
 
         CheckResult result = Property.def("Integer wrapper iso").
                 forAll(integer).
-                suchThat((i) -> laws(iso, i, new IntWrapper(i))).
+                suchThat((i) -> new IsoLaws<>(iso).satisfyAll(i, new IntWrapper(i))).
                 check();
         result.assertIsSatisfied();
 
 
-        laws(iso, 23, new IntWrapper(23));
+        Assert.assertTrue(new IsoLaws<>(iso).satisfyAll(23, new IntWrapper(23)));
     }
 
     private static class IntWrapper {

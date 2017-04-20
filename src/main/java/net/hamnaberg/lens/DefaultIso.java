@@ -21,4 +21,8 @@ final class DefaultIso<S, A> implements Iso<S, A> {
         return this.reverseGet.apply(a);
     }
 
+    @Override
+    public String toString() {
+        return "iso";
+    }
 }

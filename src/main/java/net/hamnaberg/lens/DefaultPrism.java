@@ -23,4 +23,9 @@ final class DefaultPrism<S, A> implements Prism<S, A> {
         return getOption.apply(s);
     }
 
+
+    @Override
+    public String toString() {
+        return "prism";
+    }
 }

@@ -22,4 +22,9 @@ final class DefaultLens<S, A> implements Lens<S, A> {
         return set.apply(s, a);
     }
 
+
+    @Override
+    public String toString() {
+        return "lens";
+    }
 }

@@ -22,12 +22,16 @@ public interface Prism<S, A> {
         return getOption(s).isDefined();
     }
 
-    default Function<S, S> modify(Function<A, A> f) {
-        return s -> getOrModify(s).fold(Function.identity(), a -> reverseGet(f.apply(a)));
+    default S modify(S s, Function<A, A> f) {
+        return getOrModify(s).fold(Function.identity(), a -> reverseGet(f.apply(a)));
     }
 
-    default Function<S, Option<S>> modifyOption(Function<A, A> f) {
-        return s -> getOption(s).map(a -> reverseGet(f.apply(a)));
+    default S set(S s, A a) {
+        return modify(s, ignore -> a);
+    }
+
+    default Option<S> modifyOption(S s, Function<A, A> f) {
+        return getOption(s).map(a -> reverseGet(f.apply(a)));
     }
 
     default <B> Prism<S, B> compose(Prism<A, B> prism) {
