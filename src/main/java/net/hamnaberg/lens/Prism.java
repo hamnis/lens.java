@@ -4,6 +4,7 @@ import javaslang.control.Either;
 import javaslang.control.Option;
 
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public interface Prism<S, A> {
     static <S,A> Prism<S, A> of(Function<S, Option<A>> getOption, Function<A, S> reverseGet) {
@@ -18,8 +19,20 @@ public interface Prism<S, A> {
         return getOption(s).map(Either::<S, A>right).getOrElse(Either.left(s));
     }
 
-    default boolean isMatching(S s) {
+    default boolean isEmpty(S s) {
+        return getOption(s).isEmpty();
+    }
+
+    default boolean nonEmpty(S s) {
         return getOption(s).isDefined();
+    }
+
+    default Option<A> find(S s, Predicate<A> p) {
+        return getOption(s).filter(p);
+    }
+
+    default boolean exists(S s, Predicate<A> p) {
+        return find(s, p).isDefined();
     }
 
     default S modify(S s, Function<A, A> f) {
@@ -42,7 +55,7 @@ public interface Prism<S, A> {
         );
     }
 
-    default <B> Prism<S, B> compose(Iso<A, B> iso) {
+    default <B> Prism<S, B> composeIso(Iso<A, B> iso) {
         return compose(iso.toPrism());
     }
 }

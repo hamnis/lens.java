@@ -3,6 +3,7 @@ package net.hamnaberg.lens;
 import javaslang.control.Option;
 
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public interface Iso<S, A> {
     static <S, A> Iso<S, A> of(Function<S, A> get, Function<A, S> reverseGet) {
@@ -27,6 +28,14 @@ public interface Iso<S, A> {
 
     default Iso<A, S> reverse() {
         return of(this::reverseGet, this::get);
+    }
+
+    default Option<A> find(S s, Predicate<A> p) {
+        return Option.of(get(s)).filter(p);
+    }
+
+    default boolean exists(S s, Predicate<A> p) {
+        return find(s, p).isDefined();
     }
 
     default <B> Iso<S, B> compose(Iso<A, B> iso) {
